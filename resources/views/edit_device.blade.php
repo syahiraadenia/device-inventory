@@ -40,17 +40,11 @@
                     <label for="status" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Status <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <select class="form-select" id="status" name="status" required>
-                            <option value="Active" {{ old('status', $device->status) == 'Active' ? 'selected' : '' }}>Active</option>
-                            <option value="Offline" {{ old('status', $device->status) == 'Offline' ? 'selected' : '' }}>Offline</option>
-                            <option value="Planned" {{ old('status', $device->status) == 'Planned' ? 'selected' : '' }}>Planned</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-3 align-items-center">
-                    <label for="tenant" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Tenant</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="tenant" name="tenant" value="{{ old('tenant', $device->tenant) }}">
+    <option value="Available" {{ old('status', $device->status) == 'Available' ? 'selected' : '' }}>Tersedia</option>
+    <option value="In-Use" {{ old('status', $device->status) == 'In-Use' ? 'selected' : '' }}>Dipakai</option>
+    <option value="Maintenance" {{ old('status', $device->status) == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
+    <option value="Broken" {{ old('status', $device->status) == 'Broken' ? 'selected' : '' }}>Rusak</option>
+</select>
                     </div>
                 </div>
 
@@ -58,20 +52,6 @@
                     <label for="site" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Site <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="site" name="site" value="{{ old('site', $device->site) }}" required>
-                    </div>
-                </div>
-
-                <div class="row mb-3 align-items-center">
-                    <label for="location" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Location</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="location" name="location" value="{{ old('location', $device->location) }}">
-                    </div>
-                </div>
-
-                <div class="row mb-3 align-items-center">
-                    <label for="rack" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Rack</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="rack" name="rack" value="{{ old('rack', $device->rack) }}">
                     </div>
                 </div>
 
@@ -93,13 +73,6 @@
                     <label for="device_type" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Device Type <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="device_type" name="device_type" value="{{ old('device_type', $device->type) }}" required>
-                    </div>
-                </div>
-
-                <div class="row mb-2 align-items-center">
-                    <label for="ip_address" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">IP Address</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control font-monospace" id="ip_address" name="ip_address" value="{{ old('ip_address', $device->ip_address) }}" placeholder="e.g. 192.168.1.1">
                     </div>
                 </div>
 

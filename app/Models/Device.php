@@ -9,34 +9,36 @@ class Device extends Model
 {
     use HasFactory;
 
+    // Pastikan kolom-kolom ini ada di tabel 'devices' kamu
     protected $fillable = [
-        'name',
-        'role',
-        'device_type',
-        'airflow',
-        'serial_number',
-        'site',
-        'location',
-        'rack',
-        'face',
-        'position',
-        'status',
-        'platform',
-        'ip_address',
-        'tenant',
-        'tenant_group',
-        'description'
-    ];
+    'name', 
+    'device_role_id', 
+    'department', 
+    'status', 
+    'device_type_id', 
+    'site_id', 
+    'owner_name', 
+    'manufacturer', 
+    'serial_number', 
+    'purchase_date'
+];
 
-    // Relasi: Setiap device punya satu tipe/model
-   public function deviceType()
+    // Relasi ke DeviceRole (MENGATASI ERROR COUNT)
+    public function deviceRole()
 {
-    return $this->belongsTo(DeviceType::class);
+    // Pastikan nama kolomnya adalah 'device_role_id'
+    return $this->belongsTo(DeviceRole::class, 'device_role_id');
 }
 
-    // Relasi: Setiap device berada di satu lokasi (Site)
+    // Relasi ke DeviceType
+    public function deviceType()
+    {
+        return $this->belongsTo(DeviceType::class, 'device_type_id');
+    }
+
+    // Relasi ke Site
     public function site()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Site::class, 'site_id');
     }
 }

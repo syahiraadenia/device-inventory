@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold text-dark mb-1">Devices</h2>
-            <p class="text-muted small mb-0">Kelola dan monitoring aset infrastruktur jaringan Anda</p>
+            <p class="text-muted small mb-0">Kelola inventaris kepemilikan aset infrastruktur</p>
         </div>
         <a href="{{ route('devices.create') }}" class="btn btn-primary" style="background: #2a5298; border: none; padding: 10px 20px; border-radius: 8px;">
             <i class="bi bi-plus-lg me-1"></i> Tambah Perangkat
@@ -27,16 +27,14 @@
                 <table class="table table-hover align-middle mb-0 text-nowrap">
                     <thead style="background: #f8f9fa; color: #495057; font-size: 0.8rem; font-weight: 700; border-bottom: 2px solid #e9ecef;">
                         <tr>
-                            <th class="p-3">NAME</th>
-                            <th>STATUS</th>
-                            <th>TENANT</th>
-                            <th>SITE</th>
-                            <th>LOCATION</th>
-                            <th>RACK</th>
+                            <th class="p-3">DEVICE NAME</th>
+                            <th>OWNER NAME</th>
+                            <th>DEPT</th>
                             <th>ROLE</th>
                             <th>MANUFACTURER</th>
-                            <th>TYPE</th>
-                            <th>IP ADDRESS</th>
+                            <th>SERIAL NUMBER</th>
+                            <th>PURCHASE DATE</th>
+                            <th>STATUS</th>
                             <th class="text-center" style="width: 100px;">AKSI</th>
                         </tr>
                     </thead>
@@ -44,15 +42,24 @@
     @forelse($devices as $device)
         <tr class="border-bottom">
             <td class="p-3"><span class="fw-bold text-primary">{{ $device->name }}</span></td>
-            <td><span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">Active</span></td>
-            <td class="text-muted">{{ $device->tenant ?? '—' }}</td>
-            <td><span class="text-dark fw-semibold">{{ $device->site ?? '—' }}</span></td>
-            <td class="text-secondary">{{ $device->location ?? '—' }}</td>
-            <td>{{ $device->rack ?? '—' }}</td>
-            <td><span class="badge bg-secondary-subtle text-secondary px-2 py-1">{{ $device->role ?? '—' }}</span></td>
+            <td>{{ $device->owner_name ?? '—' }}</td>
+            <td>{{ $device->department ?? '—' }}</td>
+            <td>{{ $device->deviceRole ? $device->deviceRole->name : '—' }}</td>
             <td>{{ $device->manufacturer ?? '—' }}</td>
-            <td><code>{{ $device->type ?? '—' }}</code></td>
-            <td><span class="font-monospace text-dark">{{ $device->ip_address ?? '—' }}</span></td>
+            <td><code>{{ $device->serial_number ?? '—' }}</code></td>
+            <td>{{ $device->purchase_date ?? '—' }}</td>
+            
+            <td>
+                @if($device->status == 'Broken')
+                    <span class="badge bg-danger">Rusak</span>
+                @elseif($device->status == 'Available')
+                    <span class="badge bg-success">Tersedia</span>
+                @elseif($device->status == 'In-Use')
+                    <span class="badge bg-primary">Dipakai</span>
+                @else
+                    <span class="badge bg-warning text-dark">Maintenance</span>
+                @endif
+            </td>
             
             <td class="text-center align-middle">
                 <div class="d-flex justify-content-center gap-1">
@@ -70,7 +77,7 @@
         </tr>
     @empty
         <tr>
-            <td colspan="11" class="text-center p-5 text-muted">
+            <td colspan="9" class="text-center p-5 text-muted">
                 <div class="d-flex flex-column align-items-center">
                     <i class="bi bi-hdd-network display-4 mb-2"></i>
                     <span>Belum ada data perangkat yang terdaftar di sistem.</span>
@@ -78,7 +85,7 @@
             </td>
         </tr>
     @endforelse
-</tbody>
+                    </tbody>
                 </table>
             </div>
         </div>

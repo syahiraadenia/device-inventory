@@ -8,7 +8,7 @@
         <a href="{{ route('device-roles.index') }}" class="text-decoration-none small text-muted">
             <i class="bi bi-arrow-left me-1"></i> Kembali ke Device Roles
         </a>
-        <h2 class="fw-bold text-dark mt-2 mb-1">Add a New Device Role</h2>
+        <h2 class="fw-bold text-dark mt-2 mb-1">Add a New Role</h2>
     </div>
 
     <form action="{{ route('device-roles.store') }}" method="POST">
@@ -16,80 +16,38 @@
 
         <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
             <div class="card-header bg-transparent pt-3 pb-2 border-0">
-                <h5 class="fw-bold text-secondary mb-0" style="font-size: 1.1rem;">Device Role</h5>
+                <h5 class="fw-bold text-secondary mb-0" style="font-size: 1.1rem;">Role Details</h5>
             </div>
             <div class="card-body pt-1">
                 
+                {{-- Nama Role/Kategori Aset --}}
                 <div class="row mb-3 align-items-center">
-                    <label for="name" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Name <span class="text-danger">*</span></label>
+                    <label for="name" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Role Name <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Contoh: IT Support, HRD" required>
                     </div>
                 </div>
 
+                {{-- Departemen (Menggantikan Color) --}}
                 <div class="row mb-3 align-items-center">
-                    <label for="slug" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Slug <span class="text-danger">*</span></label>
+                    <label for="department" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Department <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="slug" name="slug" required>
-                            <button class="btn btn-outline-secondary" type="button" title="Regenerate Slug">
-                                <i class="bi bi-arrow-clockwise"></i>
-                            </button>
-                        </div>
-                        <div class="form-text text-muted" style="font-size: 0.75rem;">URL-friendly unique shorthand</div>
-                    </div>
-                </div>
-
-                <div class="row mb-3 align-items-center">
-                    <label for="parent" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Parent</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="parent" name="parent">
-                            <option value="" selected>---------</option>
-                            <option value="Switch">Switch</option>
-                            <option value="Router">Router</option>
+                        <select class="form-select" id="department" name="department" required>
+                            <option value="">Pilih Departemen...</option>
+                            <option value="IT">IT</option>
+                            <option value="HRD">HRD</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Operations">Operations</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="row mb-3 align-items-center">
-                    <label for="color" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Color <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="color" name="color" required>
-                            <option value="grey" selected>Grey</option>
-                            <option value="red">Red</option>
-                            <option value="green">Green</option>
-                            <option value="blue">Blue</option>
-                            <option value="yellow">Yellow</option>
-                        </select>
-                        <div class="form-text text-muted" style="font-size: 0.75rem;">RGB color in hexadecimal. Example: <code>00ff00</code></div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-sm-9 offset-sm-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="vm_role" name="vm_role" value="1" checked>
-                            <label class="form-check-label fw-semibold text-dark" for="vm_role">
-                                VM role
-                            </label>
-                            <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 0;">Virtual machines may be assigned to this role</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3 align-items-center">
-                    <label for="config_template" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Config template</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="config_template" name="config_template">
-                            <option value="" selected>---------</option>
-                        </select>
-                    </div>
-                </div>
-
+                {{-- Deskripsi --}}
                 <div class="row mb-2 align-items-start">
                     <label for="description" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Description</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="description" name="description">
+                        <textarea class="form-control" id="description" name="description" rows="2" placeholder="Tujuan atau fungsi perangkat untuk departemen ini"></textarea>
                     </div>
                 </div>
 
@@ -98,12 +56,7 @@
 
         <div class="row mb-5">
             <div class="col-sm-9 offset-sm-3 d-flex gap-2">
-                <button type="submit" class="btn btn-success px-4" style="background-color: #007d65; border: none; font-weight: 600;">
-                    Create
-                </button>
-                <button type="submit" name="add_another" value="1" class="btn btn-outline-success px-3" style="color: #007d65; border-color: #007d65; font-weight: 500;">
-                    Create & Add Another
-                </button>
+                <button type="submit" class="btn btn-primary px-4">Create Role</button>
                 <a href="{{ route('device-roles.index') }}" class="btn btn-light border px-4">Cancel</a>
             </div>
         </div>

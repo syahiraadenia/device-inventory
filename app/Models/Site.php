@@ -10,9 +10,7 @@ protected $fillable = [
     'name', 
     'slug', 
     'status', 
-    'facility', 
-    'region_id', 
-    'group_id'
+    'description'
 ];    public function devices() {
         return $this->hasMany(Device::class);
     }

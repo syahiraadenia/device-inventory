@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Facility</label>
-                        <input type="text" name="facility" class="form-control" value="{{ old('facility', $site->facility) }}">
+                        <input type="text" name="description" class="form-control" value="{{ old('description', $site->description) }}">
                     </div>
                 </div>
 

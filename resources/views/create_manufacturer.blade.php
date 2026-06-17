@@ -61,33 +61,6 @@
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
-            <div class="card-header bg-transparent pt-3 pb-2 border-0">
-                <h5 class="fw-bold text-secondary mb-0" style="font-size: 1.1rem;">Ownership</h5>
-            </div>
-            <div class="card-body pt-1">
-                
-                <div class="row mb-3 align-items-center">
-                    <label for="owner_group" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Owner group</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="owner_group" name="owner_group">
-                            <option value="" selected>---------</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-2 align-items-center">
-                    <label for="owner" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Owner</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="owner" name="owner">
-                            <option value="" selected>---------</option>
-                        </select>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
         <div class="row mb-5">
             <div class="col-sm-9 offset-sm-3 d-flex gap-2">
                 <button type="submit" class="btn btn-success px-4" style="background-color: #007d65; border: none; font-weight: 600;">

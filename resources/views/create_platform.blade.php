@@ -41,17 +41,6 @@
                 </div>
 
                 <div class="row mb-3 align-items-center">
-                    <label for="parent" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Parent</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="parent" name="parent">
-                            <option value="" selected>---------</option>
-                            <option value="Linux">Linux</option>
-                            <option value="Windows">Windows</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-3 align-items-center">
     <label for="manufacturer_id" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Manufacturer</label>
     <div class="col-sm-9">
         <div class="input-group">
@@ -70,30 +59,10 @@
     </div>
 </div>
 
-                <div class="row mb-3 align-items-center">
-                    <label for="config_template" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Config template</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="config_template" name="config_template">
-                            <option value="" selected>---------</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="row mb-3 align-items-start">
                     <label for="description" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Description</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="description" name="description">
-                    </div>
-                </div>
-
-                <div class="row mb-2 align-items-center">
-                    <label for="tags" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Tags</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="tags" name="tags">
-                            <option value="" selected>---------</option>
-                            <option value="Production">Production</option>
-                            <option value="Legacy">Legacy</option>
-                        </select>
                     </div>
                 </div>
 

@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 class ManufacturerController extends Controller
 {
     public function index()
-    {
-        // Ambil data langsung dari tabel manufacturers di PostgreSQL
-        $manufacturers = Manufacturer::all();
-        return view('manufacturers', compact('manufacturers'));
-    }
+{
+    // Hanya memanggil relasi yang ada di model
+    $manufacturers = Manufacturer::withCount([
+        'deviceTypes', 
+        'inventoryItems', 
+        'platforms'
+    ])->get();
+
+    return view('manufacturers', compact('manufacturers'));
+}
 
     public function create()
     {

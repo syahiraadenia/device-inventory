@@ -8,9 +8,12 @@ return new class extends Migration {
         Schema::create('device_roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->nullable();
+            $table->string('department'); // Kolom baru
+            $table->text('description')->nullable(); // Kolom baru
             $table->timestamps();
         });
     }
-    public function down() { Schema::dropIfExists('device_roles'); }
+    public function down() { 
+        Schema::dropIfExists('device_roles'); 
+    }
 };

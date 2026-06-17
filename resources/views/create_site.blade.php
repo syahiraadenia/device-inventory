@@ -26,8 +26,8 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Facility</label>
-                <input type="text" name="facility" class="form-control" placeholder="Local facility ID or description">
+                <label class="form-label">Description</label>
+                <input type="text" name="description" class="form-control" placeholder="description">
             </div>
 
             <button type="submit" class="btn btn-primary">Create</button>

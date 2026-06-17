@@ -10,7 +10,6 @@ class DeviceRoleController extends Controller
     public function index()
     {
         $roles = DeviceRole::all();
-        // Ubah dari 'device_roles.index' menjadi 'device_roles'
         return view('device_roles', compact('roles'));
     }
 
@@ -21,13 +20,15 @@ class DeviceRoleController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi disesuaikan dengan field yang ada di form
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
-            'color' => 'required',
+            'name'        => 'required|string|max:255',
+            'department'  => 'required|string|max:255', // Ganti slug jadi department
+            'description' => 'nullable|string',        // Tambahkan description
         ]);
 
         DeviceRole::create($validated);
+        
         return redirect()->route('device-roles.index')->with('success', 'Role berhasil ditambahkan!');
     }
 
@@ -40,13 +41,14 @@ class DeviceRoleController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
-            'color' => 'required',
+            'name'        => 'required|string|max:255',
+            'department'  => 'required|string|max:255', // Ganti slug jadi department
+            'description' => 'nullable|string',
         ]);
 
         $role = DeviceRole::findOrFail($id);
         $role->update($validated);
+        
         return redirect()->route('device-roles.index')->with('success', 'Role berhasil diperbarui!');
     }
 
@@ -54,6 +56,7 @@ class DeviceRoleController extends Controller
     {
         $role = DeviceRole::findOrFail($id);
         $role->delete();
+        
         return redirect()->route('device-roles.index')->with('success', 'Role berhasil dihapus!');
     }
 }

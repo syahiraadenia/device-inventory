@@ -10,18 +10,37 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('devices', function (Blueprint $table) {
-        $table->id();
-        $table->string('name'); // Hostname perangkat (Contoh: SW-CORE-01)
-        $table->foreignId('device_type_id')->constrained()->onDelete('cascade'); // Relasi ke Tipe/Model
-        $table->foreignId('site_id')->constrained()->onDelete('cascade'); // Relasi ke Lokasi
-        $table->string('serial_number')->unique()->nullable();
-        $table->string('asset_tag')->unique()->nullable();
-        $table->string('primary_ip')->nullable();
-        $table->enum('status', ['active', 'offline', 'staged', 'failed'])->default('active');
-        $table->text('description')->nullable();
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('devices', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            
+            // Relasi (Foreign Keys)
+            $table->foreignId('device_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('site_id')->constrained()->onDelete('cascade');
+            $table->foreignId('device_role_id')->nullable()->constrained('device_roles')->onDelete('set null');
+            
+            // Kolom Informasi Perangkat
+            $table->string('serial_number')->unique()->nullable();
+            $table->string('primary_ip')->nullable();
+            $table->enum('status', ['active', 'offline', 'staged', 'failed'])->default('active');
+            $table->text('description')->nullable();
+            
+            // KOLOM BARU YANG DIBUTUHKAN (Agar tidak error lagi)
+            $table->string('department')->nullable();
+            $table->string('owner_name')->nullable();
+            $table->string('manufacturer')->nullable();
+            $table->date('purchase_date')->nullable();
+            
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('devices');
+    }
 };

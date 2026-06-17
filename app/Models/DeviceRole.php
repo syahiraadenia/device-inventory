@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeviceRole extends Model
 {
-    // Mengizinkan semua kolom diisi (Mass Assignment)
     protected $guarded = [];
 
-    // Relasi: Satu role bisa dimiliki oleh banyak device
     public function devices()
-    {
-        return $this->hasMany(Device::class);
-    }
+{
+    // Pastikan di sini juga 'device_role_id'
+    return $this->hasMany(Device::class, 'device_role_id');
+}
 }

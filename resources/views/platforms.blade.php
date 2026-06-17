@@ -24,7 +24,6 @@
                             <th>NAME</th>
                             <th>MANUFACTURER</th>
                             <th>DEVICES</th>
-                            <th>VMS</th>
                             <th>DESCRIPTION</th>
                             <th class="text-center" style="width: 100px;">AKSI</th>
                         </tr>

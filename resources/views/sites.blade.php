@@ -12,7 +12,7 @@
             <tr>
                 <th>NAME</th>
                 <th>STATUS</th>
-                <th>FACILITY</th>
+                <th>DESCRIPTION</th>
                 <th>REGION</th>
                 <th>GROUP</th>
                 <th style="width: 100px;">AKSI</th> </tr>
@@ -22,7 +22,7 @@
             <tr>
                 <td><strong>{{ $site->name }}</strong></td>
                 <td><span class="badge bg-success">{{ ucfirst($site->status) }}</span></td>
-                <td>{{ $site->facility }}</td>
+                <td>{{ $site->description }}</td>
                 <td>{{ $site->region->name ?? '-' }}</td>
                 <td>{{ $site->group->name ?? '-' }}</td>
                 <td>
