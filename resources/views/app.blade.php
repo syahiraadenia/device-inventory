@@ -25,6 +25,9 @@
             width: 260px; background-color: var(--sidebar-bg); 
             border-right: 1px solid #e2e8f0; 
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
         .brand { 
@@ -53,9 +56,7 @@
 
         .main-content { margin-left: 260px; padding: 40px; }
 
-        /* Card Modern */
         .card { border-radius: 12px; border: 1px solid #e2e8f0; }
-        .btn-primary { background-color: var(--primary-color); border-radius: 8px; border: none; padding: 10px 20px; }
     </style>
 </head>
 <body>
@@ -76,9 +77,24 @@
             <div class="menu-label">Organization</div>
             <a href="{{ route('sites.index') }}" class="nav-link {{ Request::is('sites*') ? 'active' : '' }}"><i class="bi bi-building me-2"></i> Sites</a>
 
+            <div class="menu-label">IPAM</div>
+            <a href="{{ route('ipam.index') }}" class="nav-link {{ Request::is('ipam*') ? 'active' : '' }}">
+                <i class="bi bi-globe me-2"></i> IP Addresses
+            </a>
+
             <div class="menu-label">Device Types</div>
             <a href="{{ route('manufacturers.index') }}" class="nav-link {{ Request::is('manufacturers*') ? 'active' : '' }}"><i class="bi bi-gear me-2"></i> Manufacturers</a>
             <a href="{{ route('device-types.index') }}" class="nav-link {{ Request::is('device-types*') ? 'active' : '' }}"><i class="bi bi-layers me-2"></i> Device Types</a>
+        </div>
+
+        <div class="mt-auto pt-3 border-top">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <a href="#" onclick="event.preventDefault(); this.closest('form').submit();"
+                   class="nav-link text-danger">
+                    <i class="bi bi-box-arrow-left me-2"></i> Log Out
+                </a>
+            </form>
         </div>
     </div>
 

@@ -9,10 +9,17 @@ use Illuminate\Http\Request;
 
 class DeviceTypeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
 {
-    // Menggunakan relasi tunggal 'platform'
-    $device_types = DeviceType::with(['manufacturer', 'platform'])->get();
+    // Menggunakan withCount untuk efisiensi performa
+    $query = DeviceType::with(['manufacturer', 'platform'])->withCount('devices');
+
+    // Filter Pencarian
+    if ($request->filled('search')) {
+        $query->whereRaw('LOWER(model_name) LIKE ?', ['%' . strtolower($request->search) . '%']);
+    }
+
+    $device_types = $query->latest()->get();
     return view('device_types', compact('device_types'));
 }
 

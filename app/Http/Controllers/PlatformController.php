@@ -3,21 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Platform;
-use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 
 class PlatformController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $platforms = Platform::all();
+        // Hapus with('manufacturer') karena tidak lagi ditampilkan
+        $query = Platform::withCount('devices');
+
+        if ($request->filled('search')) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->search) . '%']);
+        }
+
+        $platforms = $query->latest()->get();
         return view('platforms', compact('platforms'));
     }
 
     public function create()
     {
-        $manufacturers = Manufacturer::all();
-        return view('create_platform', compact('manufacturers'));
+        return view('create_platform'); // Hapus $manufacturers jika tidak dipakai
     }
 
     public function store(Request $request)
@@ -25,8 +30,8 @@ class PlatformController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
-            'manufacturer_id' => 'nullable|exists:manufacturers,id',
             'description' => 'nullable|string',
+            // Hapus manufacturer_id dari validasi store
         ]);
 
         Platform::create($validated);
@@ -34,13 +39,10 @@ class PlatformController extends Controller
         return redirect()->route('platforms.index')->with('success', 'Platform berhasil ditambahkan!');
     }
 
-    // --- Tambahan Method untuk Edit & Update ---
-
     public function edit($id)
     {
         $platform = Platform::findOrFail($id);
-        $manufacturers = Manufacturer::all();
-        return view('edit_platform', compact('platform', 'manufacturers'));
+        return view('edit_platform', compact('platform')); // Hapus $manufacturers
     }
 
     public function update(Request $request, $id)
@@ -48,8 +50,8 @@ class PlatformController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
-            'manufacturer_id' => 'nullable|exists:manufacturers,id',
             'description' => 'nullable|string',
+            // Hapus manufacturer_id dari validasi update
         ]);
 
         $platform = Platform::findOrFail($id);

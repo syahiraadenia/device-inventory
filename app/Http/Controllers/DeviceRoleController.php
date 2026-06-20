@@ -2,17 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Device;
 use App\Models\DeviceRole; 
 use Illuminate\Http\Request;
 
 class DeviceRoleController extends Controller
 {
-    public function index()
-    {
-        $roles = DeviceRole::all();
-        return view('device_roles', compact('roles'));
+   public function index(Request $request)
+{
+    $query = DeviceRole::query();
+
+    if ($request->filled('search')) {
+        $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->search) . '%']);
     }
 
+    $roles = $query->get()->each(function ($role) {
+        // Hitung manual dengan mencocokkan Nama Role dan Departemen
+        $role->devices_count = Device::where('department', $role->department)
+                                     ->whereHas('deviceRole', function($q) use ($role) {
+                                         $q->where('name', $role->name);
+                                     })->count();
+    });
+
+    return view('device_roles', compact('roles'));
+}
     public function create()
     {
         return view('create_device_role');

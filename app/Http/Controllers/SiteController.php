@@ -8,10 +8,20 @@ use Illuminate\Http\Request;
 class SiteController extends Controller
 {
     // Menampilkan daftar site
-    public function index() {
-        $sites = Site::all();
-        return view('sites', compact('sites'));
+    // Menampilkan daftar site
+public function index(Request $request)
+{
+    // Hapus ->with(['region', 'group']) karena relasi tersebut tidak ada
+    $query = Site::query(); 
+
+    // Logika pencarian
+    if ($request->filled('search')) {
+        $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->search) . '%']);
     }
+
+    $sites = $query->latest()->get();
+    return view('sites', compact('sites'));
+}
 
     // Menampilkan form untuk tambah site
     public function create() {
