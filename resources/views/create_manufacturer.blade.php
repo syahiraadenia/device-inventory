@@ -1,76 +1,62 @@
 @extends('app')
 
-@section('title', 'Add a New Manufacturer — NetBox')
+@section('title', 'Add Manufacturer — Inventory System')
 
 @section('content')
-<div class="container-fluid" style="max-width: 850px; margin: 0 auto;">
-    <div class="mb-4">
-        <a href="{{ route('manufacturers.index') }}" class="text-decoration-none small text-muted">
-            <i class="bi bi-arrow-left me-1"></i> Kembali ke Manufacturers
-        </a>
-        <h2 class="fw-bold text-dark mt-2 mb-1">Add a New Manufacturer</h2>
+<style>
+    .gradient-header { background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%); color: white; border-radius: 12px; }
+    .card { border-radius: 16px !important; }
+    .form-control, .form-select { border: 1px solid #e2e8f0; padding: 0.65rem 1rem; border-radius: 8px; }
+    .form-control:focus, .form-select:focus { border-color: #2a5298; box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1); }
+    .btn-save { background: linear-gradient(45deg, #2a5298, #1e3c72); border: none; color: white; }
+</style>
+
+<div class="container-fluid py-4" style="max-width: 800px;">
+    <div class="gradient-header p-4 mb-4 shadow-sm">
+        <h2 class="fw-bold m-0">Add New Manufacturer</h2>
+        <p class="opacity-75">Daftarkan brand atau produsen perangkat keras baru.</p>
     </div>
 
     <form action="{{ route('manufacturers.store') }}" method="POST">
         @csrf
 
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
-            <div class="card-header bg-transparent pt-3 pb-2 border-0">
-                <h5 class="fw-bold text-secondary mb-0" style="font-size: 1.1rem;">Manufacturer</h5>
-            </div>
-            <div class="card-body pt-1">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h6 class="text-uppercase text-secondary fw-bold mb-4 small"><i class="bi bi-buildings me-2"></i>Manufacturer Details</h6>
                 
-                <div class="row mb-3 align-items-center">
-                    <label for="name" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Name <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" name="name" required>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Name*</label>
+                    <input type="text" name="name" class="form-control" required placeholder="Contoh: Cisco, Juniper">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Slug*</label>
+                    <div class="input-group">
+                        <input type="text" name="slug" class="form-control" required placeholder="Contoh: cisco">
+                        <button class="btn btn-outline-secondary" type="button"><i class="bi bi-arrow-clockwise"></i></button>
                     </div>
                 </div>
 
-                <div class="row mb-3 align-items-center">
-                    <label for="slug" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Slug <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="slug" name="slug" required>
-                            <button class="btn btn-outline-secondary" type="button" title="Regenerate Slug">
-                                <i class="bi bi-arrow-clockwise"></i>
-                            </button>
-                        </div>
-                        <div class="form-text text-muted" style="font-size: 0.75rem;">URL-friendly unique shorthand</div>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Description</label>
+                    <input type="text" name="description" class="form-control" placeholder="Keterangan singkat mengenai produsen...">
                 </div>
 
-                <div class="row mb-3 align-items-start">
-                    <label for="description" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Description</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="description" name="description">
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Tags</label>
+                    <select name="tags" class="form-select">
+                        <option value="">---------</option>
+                        <option value="Hardware">Hardware</option>
+                        <option value="Virtual">Virtual</option>
+                    </select>
                 </div>
-
-                <div class="row mb-2 align-items-center">
-                    <label for="tags" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Tags</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="tags" name="tags">
-                            <option value="" selected>---------</option>
-                            <option value="Hardware">Hardware</option>
-                            <option value="Virtual">Virtual</option>
-                        </select>
-                    </div>
-                </div>
-
             </div>
         </div>
 
-        <div class="row mb-5">
-            <div class="col-sm-9 offset-sm-3 d-flex gap-2">
-                <button type="submit" class="btn btn-success px-4" style="background-color: #007d65; border: none; font-weight: 600;">
-                    Create
-                </button>
-                <button type="submit" name="add_another" value="1" class="btn btn-outline-success px-3" style="color: #007d65; border-color: #007d65; font-weight: 500;">
-                    Create & Add Another
-                </button>
-                <a href="{{ route('manufacturers.index') }}" class="btn btn-light border px-4">Cancel</a>
-            </div>
+        <div class="d-flex justify-content-end gap-2 mb-5">
+            <a href="{{ route('manufacturers.index') }}" class="btn btn-light px-4 py-2 border">Cancel</a>
+            <button type="submit" name="add_another" value="1" class="btn btn-outline-primary px-3 py-2 fw-semibold">Save & Add Another</button>
+            <button type="submit" class="btn btn-save px-5 py-2 shadow-sm">Save Manufacturer</button>
         </div>
     </form>
 </div>

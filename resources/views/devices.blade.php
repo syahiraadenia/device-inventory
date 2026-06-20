@@ -1,93 +1,105 @@
 @extends('app')
 
-@section('title', 'Devices — NetBox')
+@section('title', 'Devices — Inventory System')
 
 @section('content')
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<style>
+    .gradient-header { background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%); color: white; border-radius: 12px; }
+    .table-hover tbody tr:hover { background-color: #f0f7ff !important; border-left: 4px solid #2a5298; }
+    .status-pill { padding: 5px 12px; border-radius: 20px; font-size: 0.70rem; font-weight: 600; display: inline-block; }
+    .small-text { font-size: 0.75rem; color: #64748b; }
+    /* TAMBAHKAN BARIS DI BAWAH INI */
+    .table td { white-space: nowrap; vertical-align: middle; }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="gradient-header p-4 mb-4 shadow-sm d-flex justify-content-between align-items-center">
         <div>
-            <h2 class="fw-bold text-dark mb-1">Devices</h2>
-            <p class="text-muted small mb-0">Kelola inventaris kepemilikan aset infrastruktur</p>
+            <h2 class="fw-bold m-0">Devices Inventory</h2>
+            <p class="opacity-75 mb-0">Manajemen aset jaringan perusahaan</p>
         </div>
-        <a href="{{ route('devices.create') }}" class="btn btn-primary" style="background: #2a5298; border: none; padding: 10px 20px; border-radius: 8px;">
-            <i class="bi bi-plus-lg me-1"></i> Tambah Perangkat
+        <a href="{{ route('devices.create') }}" class="btn btn-light text-primary fw-bold shadow-sm px-4 py-2" style="border-radius: 8px;">
+            <i class="bi bi-plus-lg me-1"></i> Add Device
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="border-radius: 8px;">
-            <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <form action="{{ route('devices.index') }}" method="GET">
+                <div class="input-group shadow-sm">
+                    <input type="text" name="search" class="form-control border-0" 
+                           placeholder="Cari berdasarkan nama..." 
+                           value="{{ request('search') }}">
+                    <button class="btn btn-white bg-white border-0 text-secondary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    @if(request('search'))
+                        <a href="{{ route('devices.index') }}" class="btn btn-white bg-white border-0 text-danger">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    @endif
+                </div>
+            </form>
         </div>
-    @endif
+    </div>
 
-    <div class="card border-0 shadow-sm" style="border-radius: 12px;">
-        <div class="card-body p-0 overflow-hidden">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0 text-nowrap">
-                    <thead style="background: #f8f9fa; color: #495057; font-size: 0.8rem; font-weight: 700; border-bottom: 2px solid #e9ecef;">
-                        <tr>
-                            <th class="p-3">DEVICE NAME</th>
-                            <th>OWNER NAME</th>
-                            <th>DEPT</th>
-                            <th>ROLE</th>
-                            <th>MANUFACTURER</th>
-                            <th>SERIAL NUMBER</th>
-                            <th>PURCHASE DATE</th>
-                            <th>STATUS</th>
-                            <th class="text-center" style="width: 100px;">AKSI</th>
+    <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead style="background: #f8fafc;">
+                    <tr class="text-uppercase small text-secondary">
+                        <th class="ps-4 py-3">Device Name</th>
+                        <th>Serial / Manufacturer</th>
+                        <th>Dept / Role</th>
+                        <th>Site</th> 
+                        <th>Platform</th><th>Purchase</th>
+                        <th>Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($devices as $device)
+                        <tr class="table-hover">
+                            <td class="ps-4 py-3">
+                                <div class="fw-bold text-dark">{{ $device->name }}</div>
+                                <div class="small-text">{{ $device->owner_name ?? 'No Owner' }}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold small">{{ $device->serial_number ?? '-' }}</div>
+                                <div class="small-text">{{ $device->manufacturer ?? '-' }}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold small">{{ $device->department ?? '-' }}</div>
+                                <div class="small-text">{{ $device->deviceRole->name ?? 'No Role' }}</div>
+                            </td>
+                            <td class="small fw-semibold">{{ $device->site->name ?? '-' }}</td>
+                            <td class="small">{{ $device->platform->name ?? '-' }}</td>
+                            <td class="small">{{ $device->purchase_date ?? '-' }}</td>
+                            <td>
+                                @php
+                                    $colors = ['Available' => 'bg-success text-white', 'In-Use' => 'bg-info text-white', 'Broken' => 'bg-danger text-white'];
+                                @endphp
+                                <span class="status-pill {{ $colors[$device->status] ?? 'bg-secondary' }}">
+                                    {{ $device->status }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ route('devices.edit', $device->id) }}" class="btn btn-sm btn-outline-primary border-0"><i class="bi bi-pencil"></i></a>
+                                <form action="{{ route('devices.destroy', $device->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus perangkat?')">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-sm btn-outline-danger border-0"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody style="font-size: 0.9rem;">
-    @forelse($devices as $device)
-        <tr class="border-bottom">
-            <td class="p-3"><span class="fw-bold text-primary">{{ $device->name }}</span></td>
-            <td>{{ $device->owner_name ?? '—' }}</td>
-            <td>{{ $device->department ?? '—' }}</td>
-            <td>{{ $device->deviceRole ? $device->deviceRole->name : '—' }}</td>
-            <td>{{ $device->manufacturer ?? '—' }}</td>
-            <td><code>{{ $device->serial_number ?? '—' }}</code></td>
-            <td>{{ $device->purchase_date ?? '—' }}</td>
-            
-            <td>
-                @if($device->status == 'Broken')
-                    <span class="badge bg-danger">Rusak</span>
-                @elseif($device->status == 'Available')
-                    <span class="badge bg-success">Tersedia</span>
-                @elseif($device->status == 'In-Use')
-                    <span class="badge bg-primary">Dipakai</span>
-                @else
-                    <span class="badge bg-warning text-dark">Maintenance</span>
-                @endif
-            </td>
-            
-            <td class="text-center align-middle">
-                <div class="d-flex justify-content-center gap-1">
-                    <a href="{{ route('devices.edit', $device->id) }}" class="btn btn-sm btn-light border text-primary d-flex align-items-center justify-content-center p-0" style="width: 30px; height: 30px;" title="Edit">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
-                    <form action="{{ route('devices.destroy', $device->id) }}" method="POST" class="d-inline">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-light border text-danger d-flex align-items-center justify-content-center p-0" style="width: 30px; height: 30px;" title="Hapus">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="9" class="text-center p-5 text-muted">
-                <div class="d-flex flex-column align-items-center">
-                    <i class="bi bi-hdd-network display-4 mb-2"></i>
-                    <span>Belum ada data perangkat yang terdaftar di sistem.</span>
-                </div>
-            </td>
-        </tr>
-    @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-search d-block display-4 mb-2 opacity-25"></i> Data tidak ditemukan.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

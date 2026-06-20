@@ -20,13 +20,16 @@ return new class extends Migration
             $table->foreignId('site_id')->constrained()->onDelete('cascade');
             $table->foreignId('device_role_id')->nullable()->constrained('device_roles')->onDelete('set null');
             
+            // KOLOM BARU: Relasi ke tabel platforms
+            $table->foreignId('platform_id')->nullable()->constrained('platforms')->onDelete('set null');
+            
             // Kolom Informasi Perangkat
             $table->string('serial_number')->unique()->nullable();
             $table->string('primary_ip')->nullable();
             $table->enum('status', ['active', 'offline', 'staged', 'failed'])->default('active');
             $table->text('description')->nullable();
             
-            // KOLOM BARU YANG DIBUTUHKAN (Agar tidak error lagi)
+            // Informasi Tambahan
             $table->string('department')->nullable();
             $table->string('owner_name')->nullable();
             $table->string('manufacturer')->nullable();

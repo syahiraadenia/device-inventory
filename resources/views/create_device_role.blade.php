@@ -1,64 +1,56 @@
 @extends('app')
 
-@section('title', 'Add a New Device Role — NetBox')
+@section('title', 'Add Device Role — Inventory System')
 
 @section('content')
-<div class="container-fluid" style="max-width: 850px; margin: 0 auto;">
-    <div class="mb-4">
-        <a href="{{ route('device-roles.index') }}" class="text-decoration-none small text-muted">
-            <i class="bi bi-arrow-left me-1"></i> Kembali ke Device Roles
-        </a>
-        <h2 class="fw-bold text-dark mt-2 mb-1">Add a New Role</h2>
+<style>
+    .gradient-header { background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%); color: white; border-radius: 12px; }
+    .card { border-radius: 16px !important; }
+    .form-control, .form-select { border: 1px solid #e2e8f0; padding: 0.65rem 1rem; border-radius: 8px; }
+    .form-control:focus, .form-select:focus { border-color: #2a5298; box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1); }
+    .btn-save { background: linear-gradient(45deg, #2a5298, #1e3c72); border: none; color: white; }
+</style>
+
+<div class="container-fluid py-4" style="max-width: 800px;">
+    <div class="gradient-header p-4 mb-4 shadow-sm">
+        <h2 class="fw-bold m-0">Add New Role</h2>
+        <p class="opacity-75">Buat klasifikasi peran perangkat baru untuk organisasi.</p>
     </div>
 
     <form action="{{ route('device-roles.store') }}" method="POST">
         @csrf
 
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
-            <div class="card-header bg-transparent pt-3 pb-2 border-0">
-                <h5 class="fw-bold text-secondary mb-0" style="font-size: 1.1rem;">Role Details</h5>
-            </div>
-            <div class="card-body pt-1">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h6 class="text-uppercase text-secondary fw-bold mb-4 small"><i class="bi bi-tag me-2"></i>Role Details</h6>
                 
-                {{-- Nama Role/Kategori Aset --}}
-                <div class="row mb-3 align-items-center">
-                    <label for="name" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Role Name <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Contoh: IT Support, HRD" required>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Role Name*</label>
+                    <input type="text" class="form-control" name="name" placeholder="Contoh: IT Support" required>
                 </div>
 
-                {{-- Departemen (Menggantikan Color) --}}
-                <div class="row mb-3 align-items-center">
-                    <label for="department" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Department <span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <select class="form-select" id="department" name="department" required>
-                            <option value="">Pilih Departemen...</option>
-                            <option value="IT">IT</option>
-                            <option value="HRD">HRD</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Operations">Operations</option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Department*</label>
+                    <select class="form-select" name="department" required>
+                        <option value="" disabled selected>Pilih Departemen...</option>
+                        <option value="IT">IT</option>
+                        <option value="HRD">HRD</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Operations">Operations</option>
+                    </select>
                 </div>
 
-                {{-- Deskripsi --}}
-                <div class="row mb-2 align-items-start">
-                    <label for="description" class="col-sm-3 col-form-label text-sm-end fw-semibold text-muted">Description</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" id="description" name="description" rows="2" placeholder="Tujuan atau fungsi perangkat untuk departemen ini"></textarea>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Description</label>
+                    <textarea class="form-control" name="description" rows="3" placeholder="Fungsi atau tujuan role ini..."></textarea>
                 </div>
-
             </div>
         </div>
 
-        <div class="row mb-5">
-            <div class="col-sm-9 offset-sm-3 d-flex gap-2">
-                <button type="submit" class="btn btn-primary px-4">Create Role</button>
-                <a href="{{ route('device-roles.index') }}" class="btn btn-light border px-4">Cancel</a>
-            </div>
+        <div class="d-flex justify-content-end gap-2 mb-5">
+            <a href="{{ route('device-roles.index') }}" class="btn btn-light px-4 py-2 border">Cancel</a>
+            <button type="submit" class="btn btn-save px-5 py-2 shadow-sm">Save Role</button>
         </div>
     </form>
 </div>
